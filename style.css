@@ -1,0 +1,28 @@
+.red {
+    background-color: red;
+}
+.black {
+    background-color: black;
+}
+
+
+#checkerboard {
+    margin-top: 60px;
+}
+
+/*
+.checkerboard:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}*/
+img {
+    float: left;
+}
+
+
+.row div:after {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
