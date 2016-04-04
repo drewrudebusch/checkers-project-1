@@ -1,26 +1,57 @@
+.r {
+    margin: 0px;
+    padding: 0px;
+}
+
+.r div {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    height: 75px;
+    width: 75px;
+    float: left;
+}
+
+
+#right-column {
+    float: right;
+    background-color: blue;
+    display: inline-block;
+}
+
 .red {
     background-color: red;
 }
 .black {
     background-color: black;
+
 }
 
 
 #checkerboard {
-    margin-top: 60px;
+    display: inline-block;
+    width: 610px;
+    margin: 30px 20px 10px 20px;
 }
 
+.col8 {
+    border-right: 2px gray;
+    box-shadow: 30deg 10px 5px gray;
+}
 
-/*
-.checkerboard:before {
-    content: "";
-    display: block;
-    padding-top: 100%;
-}*/
 img {
-    float: left;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 0;
+    width: auto;
+    height: 100%;
+    padding: 5px;
+    /*padding-bottom: 20%;*/
 }
-
+.row {
+    padding-top: 0;
+    height: 80px;
+}
 
 .row div:after {
     content: "";
