@@ -40,7 +40,7 @@
     padding: 5px;
 }*/
 .active-piece {
-    box-shadow: 0 2px 15px blue;
+    box-shadow: 0 2px 15px yellow;
 }
 #checkerboard {
     display: inline-block;
