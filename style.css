@@ -22,9 +22,11 @@
 
 .red-space {
     background-color: red;
+    z-index: -1;
 }
 .black-space {
     background-color: black;
+    z-index: -1;
 
 }
 /*.piece {
@@ -55,12 +57,14 @@
 }
 
 img {
+    float: left;
     display: inline-block;
     margin: 0 auto;
     padding: 0;
     width: 90%;
     height: 90%;
     border-radius: 50%;
+    z-index: 0;
     /*padding-bottom: 20%;*/
 }
 .row {
