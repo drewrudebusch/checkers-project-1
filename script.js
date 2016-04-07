@@ -1,92 +1,79 @@
 $(document).ready(function () {
+    var redTurn = false;
     var startSpace = "";
-    var redTurn = true;
+    var lastSpace = "";
     var activeSpace = "";
     var moves = [];
+    var validMoves = [];
     var revert = false;
+    var jumped = [];
     // var redJumps
     // var blackJumps
 
-    var spaces = {"r1c1": {"Row": 1, "Column": 1},
-                    "r1c2": {"Row": 1, "Column": 2},
-                    "r1c3": {"Row": 1, "Column": 3},
-                    "r1c4": {"Row": 1, "Column": 4},
-                    "r1c5": {"Row": 1, "Column": 5},
-                    "r1c6": {"Row": 1, "Column": 6},
-                    "r1c7": {"Row": 1, "Column": 7},
-                    "r1c8": {"Row": 1, "Column": 8},
-                    "r2c1": {"Row": 2, "Column": 1},
-                    "r2c2": {"Row": 2, "Column": 2},
-                    "r2c3": {"Row": 2, "Column": 3},
-                    "r2c4": {"Row": 2, "Column": 4},
-                    "r2c5": {"Row": 2, "Column": 5},
-                    "r2c6": {"Row": 2, "Column": 6},
-                    "r2c7": {"Row": 2, "Column": 7},
-                    "r2c8": {"Row": 2, "Column": 8},
-                    "r3c1": {"Row": 3, "Column": 1},
-                    "r3c2": {"Row": 3, "Column": 2},
-                    "r3c3": {"Row": 3, "Column": 3},
-                    "r3c4": {"Row": 3, "Column": 4},
-                    "r3c5": {"Row": 3, "Column": 5},
-                    "r3c6": {"Row": 3, "Column": 6},
-                    "r3c7": {"Row": 3, "Column": 7},
-                    "r3c8": {"Row": 3, "Column": 8},
-                    "r4c1": {"Row": 4, "Column": 1},
-                    "r4c2": {"Row": 4, "Column": 2},
-                    "r4c3": {"Row": 4, "Column": 3},
-                    "r4c4": {"Row": 4, "Column": 4},
-                    "r4c5": {"Row": 4, "Column": 5},
-                    "r4c6": {"Row": 4, "Column": 6},
-                    "r4c7": {"Row": 4, "Column": 7},
-                    "r4c8": {"Row": 4, "Column": 8},
-                    "r5c1": {"Row": 5, "Column": 1},
-                    "r5c2": {"Row": 5, "Column": 2},
-                    "r5c3": {"Row": 5, "Column": 3},
-                    "r5c4": {"Row": 5, "Column": 4},
-                    "r5c5": {"Row": 5, "Column": 5},
-                    "r5c6": {"Row": 5, "Column": 6},
-                    "r5c7": {"Row": 5, "Column": 7},
-                    "r5c8": {"Row": 5, "Column": 8},
-                    "r6c1": {"Row": 6, "Column": 1},
-                    "r6c2": {"Row": 6, "Column": 2},
-                    "r6c3": {"Row": 6, "Column": 3},
-                    "r6c4": {"Row": 6, "Column": 4},
-                    "r6c5": {"Row": 6, "Column": 5},
-                    "r6c6": {"Row": 6, "Column": 6},
-                    "r6c7": {"Row": 6, "Column": 7},
-                    "r6c8": {"Row": 6, "Column": 8},
-                    "r7c1": {"Row": 7, "Column": 1},
-                    "r7c2": {"Row": 7, "Column": 2},
-                    "r7c3": {"Row": 7, "Column": 3},
-                    "r7c4": {"Row": 7, "Column": 4},
-                    "r7c5": {"Row": 7, "Column": 5},
-                    "r7c6": {"Row": 7, "Column": 6},
-                    "r7c7": {"Row": 7, "Column": 7},
-                    "r7c8": {"Row": 7, "Column": 8},
-                    "r8c1": {"Row": 8, "Column": 1},
-                    "r8c2": {"Row": 8, "Column": 2},
-                    "r8c3": {"Row": 8, "Column": 3},
-                    "r8c4": {"Row": 8, "Column": 4},
-                    "r8c5": {"Row": 8, "Column": 5},
-                    "r8c6": {"Row": 8, "Column": 6},
-                    "r8c7": {"Row": 8, "Column": 7},
-                    "r8c8": {"Row": 8, "Column": 8}}
-
-    $('.piece').on('click', function(event) {
-        
-        console.log(spaces[$(this).parent().attr("id")].Row)
-
-        // if (activePiece.hasClass(playerTurn + "-piece")) {
-        //     if ($('.active-piece').length === 0 || $(this).hasClass('active-piece')) {
-        //         $(this).toggleClass('active-piece');
-
-        //     } else {
-        //         $(this).effect('shake', {direction: 'left', distance:3, times: 3}, 500);
-        //     }
-        // } else {
-        //     $(this).effect('shake', {direction: 'left', distance:3, times: 3}, 500);
-        // }
-    });
+    var spaces = {"r1c1": {"row": 1, "column": 1},
+                    "r1c2": {"row": 1, "column": 2},
+                    "r1c3": {"row": 1, "column": 3},
+                    "r1c4": {"row": 1, "column": 4},
+                    "r1c5": {"row": 1, "column": 5},
+                    "r1c6": {"row": 1, "column": 6},
+                    "r1c7": {"row": 1, "column": 7},
+                    "r1c8": {"row": 1, "column": 8},
+                    "r2c1": {"row": 2, "column": 1},
+                    "r2c2": {"row": 2, "column": 2},
+                    "r2c3": {"row": 2, "column": 3},
+                    "r2c4": {"row": 2, "column": 4},
+                    "r2c5": {"row": 2, "column": 5},
+                    "r2c6": {"row": 2, "column": 6},
+                    "r2c7": {"row": 2, "column": 7},
+                    "r2c8": {"row": 2, "column": 8},
+                    "r3c1": {"row": 3, "column": 1},
+                    "r3c2": {"row": 3, "column": 2},
+                    "r3c3": {"row": 3, "column": 3},
+                    "r3c4": {"row": 3, "column": 4},
+                    "r3c5": {"row": 3, "column": 5},
+                    "r3c6": {"row": 3, "column": 6},
+                    "r3c7": {"row": 3, "column": 7},
+                    "r3c8": {"row": 3, "column": 8},
+                    "r4c1": {"row": 4, "column": 1},
+                    "r4c2": {"row": 4, "column": 2},
+                    "r4c3": {"row": 4, "column": 3},
+                    "r4c4": {"row": 4, "column": 4},
+                    "r4c5": {"row": 4, "column": 5},
+                    "r4c6": {"row": 4, "column": 6},
+                    "r4c7": {"row": 4, "column": 7},
+                    "r4c8": {"row": 4, "column": 8},
+                    "r5c1": {"row": 5, "column": 1},
+                    "r5c2": {"row": 5, "column": 2},
+                    "r5c3": {"row": 5, "column": 3},
+                    "r5c4": {"row": 5, "column": 4},
+                    "r5c5": {"row": 5, "column": 5},
+                    "r5c6": {"row": 5, "column": 6},
+                    "r5c7": {"row": 5, "column": 7},
+                    "r5c8": {"row": 5, "column": 8},
+                    "r6c1": {"row": 6, "column": 1},
+                    "r6c2": {"row": 6, "column": 2},
+                    "r6c3": {"row": 6, "column": 3},
+                    "r6c4": {"row": 6, "column": 4},
+                    "r6c5": {"row": 6, "column": 5},
+                    "r6c6": {"row": 6, "column": 6},
+                    "r6c7": {"row": 6, "column": 7},
+                    "r6c8": {"row": 6, "column": 8},
+                    "r7c1": {"row": 7, "column": 1},
+                    "r7c2": {"row": 7, "column": 2},
+                    "r7c3": {"row": 7, "column": 3},
+                    "r7c4": {"row": 7, "column": 4},
+                    "r7c5": {"row": 7, "column": 5},
+                    "r7c6": {"row": 7, "column": 6},
+                    "r7c7": {"row": 7, "column": 7},
+                    "r7c8": {"row": 7, "column": 8},
+                    "r8c1": {"row": 8, "column": 1},
+                    "r8c2": {"row": 8, "column": 2},
+                    "r8c3": {"row": 8, "column": 3},
+                    "r8c4": {"row": 8, "column": 4},
+                    "r8c5": {"row": 8, "column": 5},
+                    "r8c6": {"row": 8, "column": 6},
+                    "r8c7": {"row": 8, "column": 7},
+                    "r8c8": {"row": 8, "column": 8}}
 
     var isDropValid = function(event, dropped) {
         var dropSpace = event.target.id;
@@ -95,34 +82,71 @@ $(document).ready(function () {
         if ($(event.target).has('img').length !== 0) {
             return false;
         } return true;
+    };
+
+    var pieceColor = function(piece) {
+        console.log(piece)
+        var color = piece.attr('src');
+        if (color === "red.png" || color === 'red-crowned.png') {
+            console.log('piece is red')
+            return "red";
+        } 
+        console.log('piece is black')
+        return "black";
     }
-    var isMoveValid = function(key, value, event) {
-        if (key === 0 && value === startSpace) {
-            return true;
-        } else if () {
-            
+
+    var isMoveValid = function(index, coord, event, piece) {
+        activeSpace = $('#' + coord);
+        var start = spaces[startSpace];
+        var space = spaces[coord];
+        if (lastSpace) {    // If there is a last space, set variables associated with the last space
+            var last = spaces[lastSpace];
+            var rowDiff = space.row - last.row;
+            var colDiff = space.column - last.column;
         }
-        console.log(value);
+        if (index === 0) { // If first space hovered && it is the starting space, move is valid // && coord === startSpace)
+            lastSpace = coord;
+            return true;
+        }
+        if (redTurn) {
+            console.log('about to check piece color ' +  pieceImg)
+            if (pieceColor(piece) === "red") {
+                if (!activeSpace.hasClass('crowned')) {                         //Red game piece that has not been kinged
+                    if ((space.row <= last.row) ||                              //If move is backward
+                        rowDiff === 0 ||                                        //If move is horizontal
+                        (Math.abs(rowDiff) > 1)) {                              //If move is more than one row
+                        console.log('false because move is backward, sideways or skips a row)')                   
+                            return false;
+                    } else if (true){
+                        return true;
+                    }
+                } else if (true){ //Red game piece that has been kinged
+                    return true;
+                }
 
-
-    }
-
-
-        
-
-        // if ($('#' + dropSpace).)
-        //     if (redTurn) {
-        //         if (!(dropped.hasClass('crowned'))) {
-        //             console.log('red piece and not crowned')
-        //             if (drop.Row <= start.Row) {
-        //                 return false;
-        //             } else if ((drop.Row === start.Row + 1) ) {
-
-        //             } 
-        //         }
-        //     }
-        // return true;
-
+            } else {
+                return false;
+            }
+        } else {
+            console.log(pieceColor(piece));
+            if (pieceColor(piece) === "black") {
+                if (!activeSpace.hasClass('crowned')) { //Black game piece that has not been kinged
+                    if ((space.row >= last.row) ||          //If move is backward
+                        (rowDiff === 1 && colDiff > 1) ||   //If move is one row, but not in adjacent column
+                        (rowDiff > 1)) { 
+                        console.log('false')                   //If move is more than one row
+                            return false;
+                    } else if (true) {
+                        return true;
+                    }
+                } else if (true) { //Black game piece that has been kinged
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        };
+    };
 
     $(function() {
         $( ".draggable" ).draggable({
@@ -140,25 +164,36 @@ $(document).ready(function () {
             over: function (event, ui) { 
                 var hoverSpace = $(this).attr('id')
                 moves.push(hoverSpace);
-                console.log(moves);
+                //console.log(moves);
             },
             drop: function( event, ui ) {
+                console.log(ui.helper)
+                lastSpace = "";
                 var dropped = ui.helper;
                 var droppedOn = $(this);
                 startSpace = dropped.parent().attr('id');
 
                 if (isDropValid(event, dropped)) {
-                    $.each(moves, function(key, value) {
-                        console.log ('about to run isMoveValid ' + value)
-                        isMoveValid(key, value, event)
-                    });
-                }
+                    for (var i = 0; i < moves.length; i++) {
+                        console.log(moves[i]);
+                        validMoves.push(isMoveValid(i, moves[i], event, dropped));
+                    };
 
 
+                    // $.each(moves, function(index, coord) {
+                    //     validMoves.push(isMoveValid(index, coord, event, dropped));
+                    // });
+                    console.log(validMoves);
+                    if (validMoves.indexOf(false) === -1) {
+                        $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
+                    } else {
+                        console.log('invalid move')
+                    }
+                    
 
-
-                    $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
-
+                    jumped = [];
+                    
+                };
                     // if (isMoveValid(event, dropped)) {
                     //     console.log('move is valid')
                     //     $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
@@ -170,56 +205,12 @@ $(document).ready(function () {
                     // }
                 
 
-                moves = [];
-            },
-            // stop: function( event, ui ) {
-                
-            // }
+                moves = [];;
+                validMoves = [];
+                console.log(moves + " -- " + validMoves)
+            }
         });
     });
 
 
 });
-
-//(function($) {
-//     $.fn.drags = function(opt) {
-
-//         opt = $.extend({handle:"",cursor:"move"}, opt);
-
-//         if(opt.handle === "") {
-//             var $el = this;
-//         } else {
-//             var $el = this.find(opt.handle);
-//         }
-
-//         return $el.css('cursor', opt.cursor).on("mousedown", function(e) {
-//             if(opt.handle === "") {
-//                 var $drag = $(this).addClass('draggable');
-//             } else {
-//                 var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
-//             }
-//             var z_idx = $drag.css('z-index'),
-//                 drg_h = $drag.outerHeight(),
-//                 drg_w = $drag.outerWidth(),
-//                 pos_y = $drag.offset().top + drg_h - e.pageY,
-//                 pos_x = $drag.offset().left + drg_w - e.pageX;
-//             $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
-//                 $('.draggable').offset({
-//                     top:e.pageY + pos_y - drg_h,
-//                     left:e.pageX + pos_x - drg_w
-//                 }).on("mouseup", function() {
-//                     $(this).removeClass('draggable').css('z-index', z_idx);
-//                 });
-//             });
-//             e.preventDefault(); // disable selection
-//         }).on("mouseup", function() {
-//             if(opt.handle === "") {
-//                 $(this).removeClass('draggable');
-//             } else {
-//                 $(this).removeClass('active-handle').parent().removeClass('draggable');
-//             }
-//         });
-
-//     }
-//})(jQuery);
-

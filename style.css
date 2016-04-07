@@ -1,8 +1,22 @@
+body {
+    background-color: #f2f2f2;
+}
+#header-space {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+#checkerboard {
+    float: left;
+    display: inline-block;
+    /*width: 600px;*/
+    margin: 0px 20px 10px 20px;
+    box-shadow: 0 0 10px gray;
+}
 .r {
     margin: 0px;
     padding: 0px;
 }
-
 .r div {
     margin: 0px;
     padding-top: 5px;
@@ -12,52 +26,12 @@
     width: 75px;
     float: left;
 }
-
-
-#right-column {
-    float: right;
-    background-color: blue;
-    display: inline-block;
-}
-
 .red-space {
     background-color: red;
 }
 .black-space {
     background-color: black;
-
 }
-/*.piece {
-    background-image: url("red-crowned.png");
-    background-size: 90%;
-    background-position: 4px 4px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    margin: 0 auto;
-    padding: 0;
-    width: auto;
-    height: 100%;
-    padding: 5px;
-}*/
-.ui-draggable-dragging{
-    box-shadow: 0 2px 15px yellow;
-}
-.active-piece {
-    box-shadow: 0 2px 15px yellow;
-    z-index: 100;
-}
-#checkerboard {
-    display: inline-block;
-    width: 600px;
-    margin: 30px 20px 10px 20px;
-    box-shadow: 0 0 10px gray;
-}
-
-.col8 {
-    border-right: 2px gray;
-    box-shadow: 30deg 10px 5px gray;
-}
-
 img {
     float: left;
     display: inline-block;
@@ -69,13 +43,17 @@ img {
     z-index: 1;
     /*padding-bottom: 20%;*/
 }
-.row {
-    padding-top: 0;
-    height: 80px;
+.ui-draggable-dragging{
+    box-shadow: 0 2px 15px yellow;
 }
-
-.row div:after {
-    content: "";
-    display: block;
-    padding-top: 100%;
+.active-piece {
+    box-shadow: 0 2px 15px yellow;
+    z-index: 100;
+}
+#right-column {
+    float: left;
+    height: 100%;
+    width: 40%;
+    background-color: blue;
+    display: inline-block;
 }
