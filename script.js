@@ -6,9 +6,11 @@ $(document).ready(function () {
     var moves = [];
     var validMoves = [];
     var revert = false;
+    var jump = false;
     var jumped = [];
-    // var redJumps
-    // var blackJumps
+    var kingMe;
+    var redJumps = 0;
+    var blackJumps = 0;
 
     var spaces = {"r1c1": {"row": 1, "column": 1},
                     "r1c2": {"row": 1, "column": 2},
@@ -80,23 +82,29 @@ $(document).ready(function () {
         var start = spaces[startSpace];
         var drop = spaces[dropSpace];
         if ($(event.target).has('img').length !== 0) {
+            console.log('drop is not valid');
+            clearMoves();
             return false;
         } return true;
     };
 
     var pieceColor = function(piece) {
-        console.log(piece)
         var color = piece.attr('src');
         if (color === "red.png" || color === 'red-crowned.png') {
-            console.log('piece is red')
             return "red";
         } 
-        console.log('piece is black')
         return "black";
     }
+    var isKinged = function(piece) {
+
+    };
 
     var isMoveValid = function(index, coord, event, piece) {
+        var kinged = piece.hasClass('.crowned')
+        var jumpedPiece;
         activeSpace = $('#' + coord);
+        spaceOccupied = activeSpace.has('img').length > 0 ? true :  false;
+        occupiedColor = spaceOccupied ? pieceColor(activeSpace.find('img')) : "";
         var start = spaces[startSpace];
         var space = spaces[coord];
         if (lastSpace) {    // If there is a last space, set variables associated with the last space
@@ -109,18 +117,62 @@ $(document).ready(function () {
             return true;
         }
         if (redTurn) {
-            console.log('about to check piece color ' +  pieceImg)
+            console.log('lastSpace: ' + lastSpace);
+            console.log(activeSpace);
+            console.log('rowDiff: ' +  rowDiff);
+            console.log('jump: ' + jump);
+            console.log('occupied: ' + (activeSpace.has('img').length > 0));
+
             if (pieceColor(piece) === "red") {
-                if (!activeSpace.hasClass('crowned')) {                         //Red game piece that has not been kinged
+                if (!kinged) {                         //Red game piece that has not been kinged
                     if ((space.row <= last.row) ||                              //If move is backward
                         rowDiff === 0 ||                                        //If move is horizontal
                         (Math.abs(rowDiff) > 1)) {                              //If move is more than one row
-                        console.log('false because move is backward, sideways or skips a row)')                   
+                        console.log('false because move is backward, sideways or skips a row')                   
                             return false;
-                    } else if (true){
-                        return true;
+                    } else if (true) {
+                    
+                        console.log('checking for jump scenarios');
+
+                        if (jump && activeSpace.has('img').length > 0) {
+
+                            console.log('jump, but space is occupied');
+
+                            return false;
+                        } else if (!jump && activeSpace.has('img').length > 0) {
+
+                            console.log('jump!')
+
+                            jump = true;
+                        }
+                        else if (jump && (activeSpace.has('img').length === 0)) {
+
+                            console.log('landing from a jump move')
+                            console.log('jump from...')
+                            console.log(moves[index-2])
+
+                            if (Math.abs(space.column - spaces[moves[index-2]].column) !== 2) {
+                                console.log('invalid jump')
+                                return false;
+                            } else {
+                                jumped.push(moves[index-1]);
+                                // jumpedPiece = $('#' + moves[index-1]).children('img').detach()
+                                // console.log(jumpedPiece);
+                                //$('#red-captures').append(jumpedPiece);
+                                // $('#' + moves[index-1]).children('img').fadeOut('fast', function() {
+                                //     $(this).detach().appendTo('#red-captures');
+                                // });
+                                console.log(jumped);
+                            }
+                            jump = false;
+                        } else if (!jump && activeSpace.has('img').length === 0) {
+                            if (jumped.length > 0 && (moves.length > ((jumped.length * 2) + 1)) ||
+                                jumped.length === 0 && moves.length > 2) {
+                                return false;
+                            }
+                        }
                     }
-                } else if (true){ //Red game piece that has been kinged
+                } else if (true) { //Red game piece that has been kinged
                     return true;
                 }
 
@@ -128,15 +180,53 @@ $(document).ready(function () {
                 return false;
             }
         } else {
-            console.log(pieceColor(piece));
+            console.log('lastSpace: ' + lastSpace);
+            console.log(activeSpace);
+            console.log('rowDiff: ' +  rowDiff);
+            console.log('jump: ' + jump);
+            console.log('occupied: ' + (activeSpace.has('img').length > 0));
+
             if (pieceColor(piece) === "black") {
-                if (!activeSpace.hasClass('crowned')) { //Black game piece that has not been kinged
-                    if ((space.row >= last.row) ||          //If move is backward
-                        (rowDiff === 1 && colDiff > 1) ||   //If move is one row, but not in adjacent column
-                        (rowDiff > 1)) { 
-                        console.log('false')                   //If move is more than one row
+                if (!kinged) {                                                  //Black game piece that has not been kinged
+                    if ((space.row >= last.row) ||                              //If move is backward
+                        rowDiff === 0 ||                                        //If move is horizontal
+                        (Math.abs(rowDiff) > 1)) {                              //If move is more than one row
+                        console.log('false because move is backward, sideways or skips a row ' + coord)                   
                             return false;
                     } else if (true) {
+
+                        console.log('checking for jump scenarios');
+
+                        if (jump && activeSpace.has('img').length > 0) {
+
+                            console.log('jump, but space is occupied');
+
+                            return false;
+                        } else if (!jump && activeSpace.has('img').length > 0) {
+
+                            console.log('jump!')
+
+                            jump = true;
+                        }
+                        else if (jump && (activeSpace.has('img').length === 0)) {
+                            // console.log('landing from a jump move')
+                            // console.log('jump from...')
+                            // console.log(moves[index-2])
+                            if (Math.abs(space.column - spaces[moves[index-2]].column) !== 2) {
+                                console.log('invalid jump')
+                                return false;
+                            } else {
+                                jumped.push(moves[index-1]);
+                            }
+                            jump = false;
+                        } else if (!jump && activeSpace.has('img').length === 0) {
+                            if (jumped.length > 0 && (moves.length > ((jumped.length * 2) + 1)) ||
+                                jumped.length === 0 && moves.length > 2) {
+                                return false;
+                            }
+                        }
+
+
                         return true;
                     }
                 } else if (true) { //Black game piece that has been kinged
@@ -148,10 +238,18 @@ $(document).ready(function () {
         };
     };
 
+    var clearMoves = function() {
+        lastSpace = "";
+        moves = [];
+        validMoves = [];
+        jumped = [];
+    }
+
     $(function() {
         $( ".draggable" ).draggable({
             // snap: true,
             // snapMode: 'inner'
+            containment: $('#checkerboard'),
             revert: true,
             revertDuration: 200
         });
@@ -164,10 +262,8 @@ $(document).ready(function () {
             over: function (event, ui) { 
                 var hoverSpace = $(this).attr('id')
                 moves.push(hoverSpace);
-                //console.log(moves);
             },
             drop: function( event, ui ) {
-                console.log(ui.helper)
                 lastSpace = "";
                 var dropped = ui.helper;
                 var droppedOn = $(this);
@@ -175,25 +271,42 @@ $(document).ready(function () {
 
                 if (isDropValid(event, dropped)) {
                     for (var i = 0; i < moves.length; i++) {
-                        console.log(moves[i]);
                         validMoves.push(isMoveValid(i, moves[i], event, dropped));
+                        lastSpace = moves[i];
                     };
-
-
-                    // $.each(moves, function(index, coord) {
-                    //     validMoves.push(isMoveValid(index, coord, event, dropped));
-                    // });
-                    console.log(validMoves);
+                    console.log(validMoves)
                     if (validMoves.indexOf(false) === -1) {
                         $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
+                        for (var i = 0; i < jumped.length; i++) {
+                            if (redTurn) {
+                                redJumps++;
+                            } else {
+                                blackJumps++
+                            };
+                            $('#' + jumped[i]).children('img').remove()
+                        }
                     } else {
                         console.log('invalid move')
+                        clearMoves();
+                        return
                     }
-                    
 
-                    jumped = [];
+                    $('#red-captures').html('Jumps: ' + redJumps)
+                    $('#black-captures').html('Jumps: ' + blackJumps)
+
+                    if (redTurn) {
+                        redTurn = false;
+                        $('#player-turn').html('Black turn')
+                    } else {
+                        redTurn = true;
+                        $('#player-turn').html('Red turn')
+                    }
+                    clearMoves();
                     
-                };
+                 } 
+                 //else {
+
+                // }
                     // if (isMoveValid(event, dropped)) {
                     //     console.log('move is valid')
                     //     $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
@@ -205,9 +318,6 @@ $(document).ready(function () {
                     // }
                 
 
-                moves = [];;
-                validMoves = [];
-                console.log(moves + " -- " + validMoves)
             }
         });
     });
