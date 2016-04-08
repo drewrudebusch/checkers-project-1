@@ -45,10 +45,10 @@ img {
 }
 .ui-draggable-dragging{
     box-shadow: 0 2px 15px yellow;
+    z-index: 100;
 }
 .active-piece {
     box-shadow: 0 2px 15px yellow;
-    z-index: 100;
 }
 #right-column {
     float: left;
@@ -64,5 +64,5 @@ img {
 
 }
 .team-dash {
-    
+
 }
