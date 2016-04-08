@@ -17,14 +17,53 @@ body {
     margin: 0px;
     padding: 0px;
 }
-.r div {
-    margin: 0px;
-    padding-top: 5px;
-    padding-left: 5px;
-    display: inline-block;
-    height: 75px;
-    width: 75px;
-    float: left;
+@media (min-width: 768px) {
+    .r div {
+        margin: 0px;
+        padding-top: 5px;
+        padding-left: 5px;
+        display: inline-block;
+        height: 70px;
+        width: 70px;
+        float: left;
+    }
+    #right-column {
+        width: 560px;
+        margin-left: 20px;
+    }
+}
+@media (max-width: 768px) {
+    .r div {
+        margin: 0px;
+        padding-top: 5px;
+        padding-left: 5px;
+        display: inline-block;
+        height: 50px;
+        width: 50px;
+        float: left;
+    }
+    #right-column {
+        width: 400px;
+        margin-left: 20px;
+    }
+}
+@media (max-width: 350px) {
+    .r div {
+        margin: 0px;
+        padding-top: 5px;
+        padding-left: 5px;
+        display: inline-block;
+        height: 40px;
+        width: 40px;
+        float: left;
+    }
+    p {
+        font-size: 30px;
+    }
+    #right-column {
+        width: 320px;
+        margin-left: 20px;
+    }
 }
 .red-space {
     background-color: red;
@@ -48,21 +87,86 @@ img {
     z-index: 100;
 }
 .active-piece {
-    box-shadow: 0 2px 15px yellow;
+    box-shadow: 0 2px 15px white;
 }
 #right-column {
+    padding: 20px;
+    border-radius: 5px;
     float: left;
     height: 100%;
-    width: 40%;
     background-color: lightblue;
     display: inline-block;
+    box-shadow: 0 0 10px gray;
 }
-#red-team {
-
-}
-#black-team {
-
+#player-turn {
+    display: block;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid gray;
 }
 .team-dash {
-
+    clear: both;
+    width: 100%;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#red-player, #black-player {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+#red-team {
+    display: block;
+    text-align: center;
+    width: 100%;
+    float: left;
+/*    margin-left: 20px;
+    margin-right: 10px;*/
+    border: 2px solid gray;
+}
+#black-team {
+    display: block;
+    text-align: center;
+    width: 100%;
+    float: right;
+/*    margin-left: 10px;
+    margin-right: 20px;*/
+    border: 2px solid gray;
+}
+.captures {
+    clear: both;
+}
+.hidden {
+    visibility: hidden;
+}
+#winner-content {
+    text-align: center;
+}
+#new-game {
+    margin-top: 10px;
+    width: 100%;
+}
+#select-players-form div, label {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.btn-warning {
+    background-color: black;
+    border: 1px solid black;
+}
+.btn-warning:hover {
+    background-color: #303030;
+    border: 1px solid black;
+}
+#first-turn-content {
+    text-align: center;
+}
+.first-player {
+    height: 50px;
+    width: 140px;
+    margin: 10px 25px;
+    padding: 10px;
 }

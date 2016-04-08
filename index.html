@@ -10,14 +10,12 @@
 
 <body>
     <div id="container" class="container-fluid">
-        <div id="header-space">
+        <div id="header-space" class="col-sm-12 col-md-12 col-lg-12">
         </div>
         <div id="checkerboard">
             <div id="row1" class="r">
                 <div id="r1c1" class="red-space col"></div>
-                <div id="r1c2" class="black-space col droppable "> 
-                <!-- <img src="red.png" class="red-piece piece draggable"> -->
-                </div>
+                <div id="r1c2" class="black-space col droppable "> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r1c3" class="red-space col"></div>
                 <div id="r1c4" class="black-space col droppable "> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r1c5" class="red-space col"></div>
@@ -28,7 +26,7 @@
             <div id="row2" class="r">
                 <div id="r2c1" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r2c2" class="red-space col"></div>
-                <div id="r2c3" class="black-space col droppable"> <img src="black-crowned.png" class="black-piece piece crowned draggable"> </div>
+                <div id="r2c3" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r2c4" class="red-space col"></div>
                 <div id="r2c5" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r2c6" class="red-space col"></div>
@@ -39,10 +37,7 @@
                 <div id="r3c1" class="red-space col"></div>
                 <div id="r3c2" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r3c3" class="red-space col"></div>
-                <div id="r3c4" class="black-space col droppable">
-
-                <!-- <img src="red.png" class="red-piece piece draggable"> -->
-                </div>
+                <div id="r3c4" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r3c5" class="red-space col"></div>
                 <div id="r3c6" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div>
                 <div id="r3c7" class="red-space col"></div>
@@ -84,7 +79,7 @@
                 <div id="r7c3" class="red-space col"></div>
                 <div id="r7c4" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div>
                 <div id="r7c5" class="red-space col"></div>
-                <div id="r7c6" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div>
+                <div id="r7c6" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div>
                 <div id="r7c7" class="red-space col"></div>
                 <div id="r7c8" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div>
             </div>
@@ -93,32 +88,74 @@
                 <div id="r8c2" class="red-space col"></div>
                 <div id="r8c3" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div>
                 <div id="r8c4" class="red-space col"></div>
-                <div id="r8c5" class="black-space col droppable">
-                <!-- <img src="black.png" class="black-piece piece draggable"> -->
-                </div>
+                <div id="r8c5" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div>
                 <div id="r8c6" class="red-space col"></div>
                 <div id="r8c7" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div>
                 <div id="r8c8" class="red-space col"></div>
             </div>
         </div>
-        <div id="right-column">
-            <div id="player-turn">Black Player's Turn</div>
-            <div id="dashboards">
-                <div id="red-team" class="team-dash">
-                    <div id="red-player">
-                        Red Player
-                    </div>
-                    <div id="red-captures" class="captures">Jumps: 0</div>
-                </div>
-                <div id="black-team" class="team-dash">
-                    <div id="black-player">
-                        Black Player
-                    </div>
-                    <div id="black-captures" class="captures">Jumps: 0</div>
-                </div>
+        <div id="right-column" class="col-sm-9 col-md-4 col-lg-5">
+            <div id="player-turn" class="col-sm-6 col-md-12 col-lg-12">
+                <h1>Black Player</h1>
+            </div>
+            <div id="red-team" class="team-dash col-sm-3 col-md-6 col-lg-6">
+                <p id="red-player"> Red Player </p>
+                <p id="red-captures" class="captures"> Jumps: 0 </p>
+            </div>
+            <div id="black-team" class="team-dash col-sm-3 col-md-6 col-lg-3">
+                <p id="black-player"> Black Player </p>
+                <p id="black-captures" class="captures"> Jumps: 0 </p>
+            </div>
+            <div id="new-game" class="btn btn-primary btn-lg">
+                New Game            
             </div>
         </div>
     </div>
+
+    <!-- Choose players modal -->
+    <div id="select-players-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" id="players">
+          <div class="modal-header">
+            <button type="button" id="select-players-modal-close" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="select-red-player"> Add Players </h4>
+            <form class="form-inline" id="select-players-form" role="form">
+                <div class="form-group">
+                    <label for="redPlayer"> Red </label>
+                    <input type="text" class="form-control" id="redPlayer">
+                </div>
+                <div class="form-group">
+                    <label for="redPlayer"> Black </label>
+                    <input type="text" class="form-control" id="blackPlayer">
+                </div>
+                <input type="submit" value="Add" class="btn btn-default btn-primary" id="select-players-submit">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Choose first player modal -->
+    <div id="first-turn-modal" class="modal fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="firstTurnModal">
+      <div class="modal-dialog modal-lg">
+        <div id="first-turn-content" class="modal-content">
+            <h2> Choose who will go first! </h2>
+            <button id="select-red" class="first-player btn btn-danger btn-lg"> Drew </button>
+            <button id="select-black" class="first-player btn btn-warning btn-lg"> Lucy </button>
+            <button id="select-random" class="first-player btn btn-success btn-lg"> Random</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Winner modal -->
+    <div id="winner-modal" class="modal fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="winnerModal">
+      <div class="modal-dialog modal-lg">
+        <div id="winner-content" class="modal-content">
+        </div>
+      </div>
+    </div>
+
 
     <script type="text/javascript" src="jquery-2.2.3.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>

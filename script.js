@@ -1,3 +1,7 @@
+$(document).ready(function() {
+
+
+})
 
 var redTurn = false;
 var startSpace = "";
@@ -11,6 +15,8 @@ var jumped = [];
 var kingMe;
 var redJumps = 0;
 var blackJumps = 0;
+var redPlayer = "Red Player";
+var blackPlayer = "Black Player";
 
 var spaces = {"r1c1": {"row": 1, "column": 1},
                 "r1c2": {"row": 1, "column": 2},
@@ -366,21 +372,88 @@ var makeDraggable = function() {
                 $('#red-captures').html('Jumps: ' + redJumps)
                 $('#black-captures').html('Jumps: ' + blackJumps)
                 console.log('Should never fire after invalid moves')
+                clearMoves();
+                checkForWin();
 
                 if (redTurn) {
                     redTurn = false;
-                    $('#player-turn').html('Black turn')
+                    $('#player-turn').html('<h1>' + blackPlayer + '</h1>')
+                    setTimeout(function() {$('.black-piece').addClass('active-piece')}, 500);
+                    setTimeout(function() {$('.black-piece').removeClass('active-piece')}, 1250);
                 } else {
                     redTurn = true;
-                    $('#player-turn').html('Red turn')
-                }
-                clearMoves();
-                
+                    $('#player-turn').html('<h1>' + redPlayer + '</h1>')
+                    setTimeout(function() {$('.red-piece').addClass('active-piece')}, 500);
+                    setTimeout(function() {$('.red-piece').removeClass('active-piece')}, 1250);
+                }                
              } 
-             //else {
-
         }
     });
 };
 
+var checkForWin = function() {
+    if (redTurn) {
+        if ($('.black-piece').length === 0) {
+            winner(redPlayer);
+        }
+    } else {
+        if ($('.red-piece').length === 0) {
+            winner(blackPlayer);
+        }
+    }
+};
+
+var winner = function(win) {
+    $('#winner-content').html('<h1>Winner: ' + win + '</h1>')
+    $('#winner-modal').modal('show');
+}
+
+$('#new-game').on('click', function() {
+    $('#select-players-modal').modal('show');
+    $('#checkerboard').html(freshBoard);
+    makeDraggable();
+});
+
+$('#select-players-form').submit(function(event) {
+        event.preventDefault();
+        console.log($(this));
+
+        redPlayer = $(this).find('input[id=redPlayer]').val();
+            $(this).find('input[id=redPlayer]').val('');
+        blackPlayer = $(this).find('input[id=blackPlayer]').val();
+            $(this).find('input[id=blackPlayer]').val('');
+
+        $('#red-player').html(redPlayer + ' (Red)');
+        $('#black-player').html(blackPlayer + ' (Black)');
+        $('#select-players-modal').modal('hide');
+        chooseFirstPlayer();
+    });
+
+var chooseFirstPlayer = function() {
+
+    $('#first-turn-modal').modal('show');
+    $('#select-red').on('click', function() {
+        redTurn = true;
+        $('#player-turn').html('<h1>' + redPlayer + '</h1>')
+        $('#first-turn-modal').modal('hide');
+    });
+    $('#select-black').on('click', function() {
+        redturn = false;
+        $('#player-turn').html('<h1>' + blackPlayer + '</h1>')
+        $('#first-turn-modal').modal('hide');
+    });
+    $('#select-random').on('click', function() {
+        if (Math.floor(Math.random() * 2) === 0) {
+            redTurn = true;
+            $('#player-turn').html('<h1>' + redPlayer + '</h1>')
+        } else {
+            redTurn = false;
+            $('#player-turn').html('<h1>' + blackPlayer + '</h1>')
+        }
+        $('#first-turn-modal').modal('hide');
+    });
+};
+
 makeDraggable();
+
+var freshBoard = '<div id="row1" class="r"><div id="r1c1" class="red-space col"></div><div id="r1c2" class="black-space col droppable "> <img src="red.png" class="red-piece piece draggable"> </div><div id="r1c3" class="red-space col"></div><div id="r1c4" class="black-space col droppable "> <img src="red.png" class="red-piece piece draggable"> </div><div id="r1c5" class="red-space col"></div><div id="r1c6" class="black-space col droppable "> <img src="red.png" class="red-piece piece draggable"> </div><div id="r1c7" class="red-space col"></div><div id="r1c8" class="black-space col droppable "> <img src="red.png" class="red-piece piece draggable"> </div></div><div id="row2" class="r"><div id="r2c1" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div><div id="r2c2" class="red-space col"></div><div id="r2c3" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div><div id="r2c4" class="red-space col"></div><div id="r2c5" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div><div id="r2c6" class="red-space col"></div><div id="r2c7" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div><div id="r2c8" class="red-space col"></div></div><div id="row3   " class="r"><div id="r3c1" class="red-space col"></div><div id="r3c2" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div><div id="r3c3" class="red-space col"></div><div id="r3c4" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div><div id="r3c5" class="red-space col"></div><div id="r3c6" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div><div id="r3c7" class="red-space col"></div><div id="r3c8" class="black-space col droppable"> <img src="red.png" class="red-piece piece draggable"> </div></div><div class="r"><div id="r4c1" class="black-space col droppable"></div><div id="r4c2" class="red-space col"></div><div id="r4c3" class="black-space col droppable"></div><div id="r4c4" class="red-space col"></div><div id="r4c5" class="black-space col droppable"></div><div id="r4c6" class="red-space col"></div><div id="r4c7" class="black-space col droppable"></div><div id="r4c8" class="red-space col"></div></div><div class="r"><div id="r5c1" class="red-space col"></div><div id="r5c2" class="black-space col droppable"></div><div id="r5c3" class="red-space col"></div><div id="r5c4" class="black-space col droppable"></div><div id="r5c5" class="red-space col"></div><div id="r5c6" class="black-space col droppable"></div><div id="r5c7" class="red-space col"></div><div id="r5c8" class="black-space col droppable"></div></div><div class="r"><div id="r6c1" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r6c2" class="red-space col"></div><div id="r6c3" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r6c4" class="red-space col"></div><div id="r6c5" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r6c6" class="red-space col"></div><div id="r6c7" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r6c8" class="red-space col"></div></div><div class="r"><div id="r7c1" class="red-space col"></div><div id="r7c2" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r7c3" class="red-space col"></div><div id="r7c4" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r7c5" class="red-space col"></div><div id="r7c6" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r7c7" class="red-space col"></div><div id="r7c8" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div></div><div class="r"><div id="r8c1" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r8c2" class="red-space col"></div><div id="r8c3" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r8c4" class="red-space col"></div><div id="r8c5" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r8c6" class="red-space col"></div><div id="r8c7" class="black-space col droppable"> <img src="black.png" class="black-piece piece draggable"> </div><div id="r8c8" class="red-space col"></div></div>'
