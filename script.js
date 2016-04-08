@@ -1,8 +1,3 @@
-$(document).ready(function() {
-
-
-})
-
 var redTurn = false;
 var startSpace = "";
 var lastSpace = "";
@@ -112,9 +107,7 @@ var makeKing = function(droppedOn) {
         $(droppedOn).html('<img src="red-crowned.png" class="red-piece piece crowned draggable">');
     } else {
         $(droppedOn).html('<img src="black-crowned.png" class="black-piece piece crowned draggable">')
-    }
-    // $(droppedOn).children('img').draggable();
-    // $('.droppable').droppable();  
+    } 
     makeDraggable();  
 }
 
@@ -136,14 +129,14 @@ var isMoveValid = function(index, coord, event, piece) {
         return true;
     }
     if (redTurn) {
-        console.log('lastSpace: ' + lastSpace);
-        console.log(activeSpace);
-        console.log('rowDiff: ' +  rowDiff);
-        console.log('jump: ' + jump);
-        console.log('occupied: ' + (activeSpace.has('img').length > 0));
-        console.log('color: ' + pieceColor(piece))
-        console.log('kinged: ' + isKinged(piece))
-        console.log('Turn: red')
+        // console.log('lastSpace: ' + lastSpace);
+        // console.log(activeSpace);
+        // console.log('rowDiff: ' +  rowDiff);
+        // console.log('jump: ' + jump);
+        // console.log('occupied: ' + (activeSpace.has('img').length > 0));
+        // console.log('color: ' + pieceColor(piece))
+        // console.log('kinged: ' + isKinged(piece))
+        // console.log('Turn: red')
 
         if (pieceColor(piece) === "red") {
             if (!isKinged(piece)) {                         //Red game piece that has not been kinged
@@ -217,17 +210,17 @@ var isMoveValid = function(index, coord, event, piece) {
             return false;
         }
     } else {
-        console.log('lastSpace: ' + lastSpace);
-        console.log(activeSpace);
-        console.log('rowDiff: ' +  rowDiff);
-        console.log('jump: ' + jump);
-        console.log('occupied: ' + (activeSpace.has('img').length > 0));
-        console.log('color: ' + pieceColor(piece))
-        console.log('kinged: ' + isKinged(piece))
-        console.log('Turn: black')
+        // console.log('lastSpace: ' + lastSpace);
+        // console.log(activeSpace);
+        // console.log('rowDiff: ' +  rowDiff);
+        // console.log('jump: ' + jump);
+        // console.log('occupied: ' + (activeSpace.has('img').length > 0));
+        // console.log('color: ' + pieceColor(piece))
+        // console.log('kinged: ' + isKinged(piece))
+        // console.log('Turn: black')
 
         if (pieceColor(piece) === "black") {
-            if (!isKinged(piece)) {                                                //Black game piece that has not been kinged
+            if (!isKinged(piece)) {                                         //Black game piece that has not been kinged
                 if ((space.row >= last.row) ||                              //If move is backward
                     rowDiff === 0 ||                                        //If move is horizontal
                     (Math.abs(rowDiff) > 1)) {                              //If move is more than one row
@@ -313,8 +306,6 @@ var clearMoves = function() {
 
 var makeDraggable = function() {
     $( ".draggable" ).draggable({
-        // snap: true,
-        // snapMode: 'inner'
         containment: $('#checkerboard'),
         revert: true,
         revertDuration: 200
